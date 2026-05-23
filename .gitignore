@@ -1,0 +1,16 @@
+# Data and DB blocks
+data/
+*.json
+*.sqlite
+*.db
+pitchiq.db-shm
+pitchiq.db-wal
+
+# Dependency blocks
+node_modules/
+.env
+
+# Environment blocks
+.DS_Store
+dist/
+build/
