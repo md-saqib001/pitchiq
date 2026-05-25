@@ -10,8 +10,8 @@ const Navbar = () => {
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 flex items-center justify-center bg-neutral-900 border border-neutral-800/80 rounded-xl shadow-inner relative group overflow-hidden">
                         <img 
-                            src="/favicon.svg" 
-                            className="w-8 h-8 relative z-10 transition-transform duration-500 group-hover:rotate-12 select-none pointer-events-none" 
+                            src="/logo.png" 
+                            className="w-8 h-8 rounded-full relative z-10 transition-transform duration-500 group-hover:rotate-12 select-none pointer-events-none" 
                             alt="PitchIQ Logo" 
                         />
                         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-fuchsia-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
