@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { 
+    TrendingUp, TrendingDown, Minus, 
+    Trophy, Zap, Activity, Target 
+} from 'lucide-react';
 import useCountUp from '../hooks/useCountUp';
 
 // Gradient configs per metric type
@@ -41,44 +44,86 @@ const gradientMap = {
 
 const StatCard = ({
     title,
+    label,
     value,
     icon,
     type = 'avg', // 'avg' | 'sr' | 'runs' | 'boundary'
+    color,
     suffix = '',
     decimals = 0,
     seasonData = [],  // Array of { season, value } for sparkline
+    sparkData,
     iplAvg = null,    // IPL average for comparison
+    benchmark,
     matches = null,
     innings = null,
+    subValue,
     lowerIsBetter = false,
 }) => {
-    const theme = gradientMap[type] || gradientMap.avg;
-    const animatedValue = useCountUp(value, 800, decimals);
+    // Resolve compatible prop names
+    const displayTitle = title || label;
+    
+    // Extract numeric value for counting/comparison
+    const rawStringVal = typeof value === 'string' ? value.replace(/[%,\s]/g, '') : value;
+    const numericVal = parseFloat(rawStringVal);
+    const displaySuffix = suffix || (typeof value === 'string' && value.includes('%') ? '%' : '');
+    
+    let displayType = type;
+    if (color) {
+        if (color === 'emerald') displayType = 'avg';
+        else if (color === 'amber') displayType = 'sr';
+        else if (color === 'fuchsia') displayType = 'runs';
+        else if (color === 'blue') displayType = 'boundary';
+        else if (color === 'red') displayType = 'runs';
+        else if (color === 'cyan') displayType = 'boundary';
+    }
+
+    const theme = gradientMap[displayType] || gradientMap.avg;
+    
+    // Animate numeric values
+    const isStringNonNumeric = isNaN(numericVal) && typeof value === 'string';
+    const animatedValue = useCountUp(isStringNonNumeric ? 0 : numericVal, 800, decimals);
+    const displayValue = isStringNonNumeric ? value : `${animatedValue}${displaySuffix}`;
+
+    const displaySeasonData = seasonData && seasonData.length > 0 ? seasonData : (sparkData || []);
+    const displayIplAvg = iplAvg !== null ? iplAvg : (benchmark !== undefined ? parseFloat(benchmark) : null);
 
     // Compute IPL comparison
     const comparison = useMemo(() => {
-        if (iplAvg === null || iplAvg === 0 || value === null || isNaN(value)) return null;
-        const diff = ((value - iplAvg) / iplAvg) * 100;
+        if (displayIplAvg === null || displayIplAvg === 0 || isNaN(numericVal) || isStringNonNumeric) return null;
+        const diff = ((numericVal - displayIplAvg) / displayIplAvg) * 100;
         return {
             diff: Math.abs(diff).toFixed(0),
             isAbove: diff > 0,
             isEqual: Math.abs(diff) < 2,
         };
-    }, [value, iplAvg]);
+    }, [numericVal, displayIplAvg, isStringNonNumeric]);
 
     // Prepare sparkline data
-    const sparkData = useMemo(() => {
-        if (!seasonData || seasonData.length === 0) return null;
-        return seasonData.slice(-5).map(s => ({
+    const sparkDataToRender = useMemo(() => {
+        if (!displaySeasonData || displaySeasonData.length === 0) return null;
+        return displaySeasonData.slice(-5).map(s => ({
             season: s.season,
             value: parseFloat(s.value) || 0,
         }));
-    }, [seasonData]);
+    }, [displaySeasonData]);
 
     const isPositiveComparison = comparison ? (lowerIsBetter ? !comparison.isAbove : comparison.isAbove) : false;
 
+    // Resolve default icon if none provided
+    const displayIcon = useMemo(() => {
+        if (icon) return icon;
+        switch (displayType) {
+            case 'avg': return <Trophy className="w-4 h-4" />;
+            case 'sr': return <Zap className="w-4 h-4" />;
+            case 'boundary': return <Activity className="w-4 h-4" />;
+            case 'runs': return <Target className="w-4 h-4" />;
+            default: return <Trophy className="w-4 h-4" />;
+        }
+    }, [icon, displayType]);
+
     return (
-        <div className="bg-neutral-950 border border-neutral-800 p-6 pb-3 rounded-3xl flex flex-col justify-between hover:border-neutral-700 transition-all duration-300 group overflow-hidden relative shadow-lg">
+        <div className="bg-neutral-950 border border-neutral-800 p-6 pb-4 rounded-3xl flex flex-col justify-between hover:border-neutral-700 transition-all duration-300 group overflow-hidden relative shadow-lg min-h-[160px] text-left">
             {/* Gradient overlay */}
             <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
             {/* Glow blob */}
@@ -86,17 +131,24 @@ const StatCard = ({
 
             {/* Header */}
             <div className="flex justify-between items-start mb-3 relative z-10">
-                <h3 className="text-neutral-500 font-bold text-[11px] uppercase tracking-widest">{title}</h3>
+                <h3 className="text-neutral-500 font-bold text-[11px] uppercase tracking-widest">{displayTitle}</h3>
                 <span className={`${theme.accent} p-2 ${theme.accentBg} rounded-xl transition-transform group-hover:scale-110 duration-300`}>
-                    {icon}
+                    {displayIcon}
                 </span>
             </div>
 
             {/* Main Value */}
             <div className="relative z-10 mb-1">
                 <div className="text-4xl font-black text-white tracking-tighter tabular-nums">
-                    {animatedValue}{suffix}
+                    {displayValue}
                 </div>
+
+                {/* Sub value */}
+                {subValue && (
+                    <div className="text-[11px] text-neutral-500 font-medium mt-1">
+                        {subValue}
+                    </div>
+                )}
 
                 {/* IPL Average Comparison */}
                 {comparison && !comparison.isEqual && (
@@ -126,12 +178,12 @@ const StatCard = ({
             )}
 
             {/* Sparkline */}
-            {sparkData && sparkData.length > 1 && (
-                <div className="h-10 w-full relative z-10 mt-auto -mb-1 -mx-1">
+            {sparkDataToRender && sparkDataToRender.length > 1 && (
+                <div className="h-10 w-full relative z-10 mt-3 -mb-2 -mx-1">
                     <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={sparkData} margin={{ top: 2, right: 2, left: 2, bottom: 0 }}>
+                        <AreaChart data={sparkDataToRender} margin={{ top: 2, right: 2, left: 2, bottom: 0 }}>
                             <defs>
-                                <linearGradient id={`spark-${type}`} x1="0" y1="0" x2="0" y2="1">
+                                <linearGradient id={`spark-${displayType}`} x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="0%" stopColor={theme.sparkGradient[0]} stopOpacity={0.4} />
                                     <stop offset="100%" stopColor={theme.sparkGradient[1]} stopOpacity={0} />
                                 </linearGradient>
@@ -141,7 +193,7 @@ const StatCard = ({
                                 dataKey="value"
                                 stroke={theme.sparkColor}
                                 strokeWidth={1.5}
-                                fill={`url(#spark-${type})`}
+                                fill={`url(#spark-${displayType})`}
                                 dot={false}
                                 activeDot={false}
                             />
