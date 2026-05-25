@@ -129,7 +129,7 @@ const FilterBar = ({
                         <select 
                             value={filters.phase} 
                             onChange={(e) => handleChange('phase', e.target.value)}
-                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-4 pr-10 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold uppercase tracking-wider cursor-pointer"
+                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-3.5 pr-8 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold text-left normal-case tracking-normal cursor-pointer"
                         >
                             <option value="all">All Phases</option>
                             <option value="powerplay">Powerplay (0-5)</option>
@@ -144,7 +144,7 @@ const FilterBar = ({
                         <select 
                             value={filters.venue} 
                             onChange={(e) => handleChange('venue', e.target.value)}
-                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-4 pr-10 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold uppercase tracking-wider cursor-pointer truncate"
+                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-3.5 pr-8 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold text-left normal-case tracking-normal cursor-pointer truncate"
                         >
                             <option value="">All Venues</option>
                             <option value="Wankhede Stadium">Wankhede</option>
@@ -179,7 +179,7 @@ const FilterBar = ({
                                     handleChange('target', 'any');
                                 }
                             }}
-                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-4 pr-10 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold uppercase tracking-wider cursor-pointer"
+                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-3.5 pr-8 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold text-left normal-case tracking-normal cursor-pointer"
                         >
                             <option value="all">All Situations</option>
                             <option value="chase">Chasing</option>
@@ -194,7 +194,7 @@ const FilterBar = ({
                             value={filters.target} 
                             onChange={(e) => handleChange('target', e.target.value)}
                             disabled={filters.situation !== 'chase'}
-                            className="w-full h-12 bg-neutral-900 border border-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-4 pr-10 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold uppercase tracking-wider cursor-pointer"
+                            className="w-full h-12 bg-neutral-900 border border-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-3.5 pr-8 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold text-left normal-case tracking-normal cursor-pointer"
                         >
                             <option value="any">Any Target</option>
                             <option value="150+">150+</option>
@@ -211,7 +211,7 @@ const FilterBar = ({
                         <select 
                             value={filters.season} 
                             onChange={(e) => handleChange('season', e.target.value)}
-                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-4 pr-10 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold uppercase tracking-wider cursor-pointer"
+                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-3.5 pr-8 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold text-left normal-case tracking-normal cursor-pointer"
                         >
                             <option value="all">All Seasons</option>
                             {seasons.map(s => <option key={s} value={s}>{s}</option>)}
@@ -224,7 +224,7 @@ const FilterBar = ({
                         <select 
                             value={filters.opposition || ''} 
                             onChange={(e) => handleChange('opposition', e.target.value)}
-                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-4 pr-10 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold uppercase tracking-wider cursor-pointer truncate"
+                            className="w-full h-12 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 focus:text-white rounded-2xl pl-3.5 pr-8 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none text-xs font-semibold text-left normal-case tracking-normal cursor-pointer truncate"
                         >
                             <option value="">All Oppositions</option>
                             {teams.map((t, i) => <option key={i} value={t}>{t}</option>)}
