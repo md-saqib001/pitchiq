@@ -9,29 +9,11 @@ const Navbar = () => {
                 {/* Brand Logo */}
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 flex items-center justify-center bg-neutral-900 border border-neutral-800/80 rounded-xl shadow-inner relative group overflow-hidden">
-                        <svg viewBox="0 0 100 100" className="w-8 h-8 relative z-10 transition-transform duration-500 group-hover:rotate-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="batGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stopColor="#d946ef" />
-                                    <stop offset="100%" stopColor="#8b5cf6" />
-                                </linearGradient>
-                                <linearGradient id="ballGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stopColor="#ef4444" />
-                                    <stop offset="100%" stopColor="#991b1b" />
-                                </linearGradient>
-                            </defs>
-                            {/* Bat handle */}
-                            <path d="M72 16 L58 30" stroke="url(#batGrad)" strokeWidth="5" strokeLinecap="round" />
-                            {/* Grip wrap lines */}
-                            <path d="M68 20 L72 16" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
-                            <path d="M64 24 L68 20" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
-                            {/* Bat blade */}
-                            <path d="M58 30 L22 66 C19 69 16 73 18 76 C20 79 24 78 27 75 L63 39 Z" fill="url(#batGrad)" />
-                            {/* Cricket Ball */}
-                            <circle cx="34" cy="38" r="10" fill="url(#ballGrad)" />
-                            {/* Seam */}
-                            <path d="M29 33 C33 37 36 40 40 44" stroke="#ffffff" strokeWidth="1.2" strokeDasharray="1.5,1.5" opacity="0.9" />
-                        </svg>
+                        <img 
+                            src="/favicon.svg" 
+                            className="w-8 h-8 relative z-10 transition-transform duration-500 group-hover:rotate-12 select-none pointer-events-none" 
+                            alt="PitchIQ Logo" 
+                        />
                         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-fuchsia-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div className="flex flex-col">
