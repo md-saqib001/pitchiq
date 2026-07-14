@@ -30,9 +30,7 @@ data/cleaned_deliveries.csv
 # Parquet (binary data, regenerated from notebooks)
 *.parquet
 
-# Notebook checkpoints
-.ipynb_checkpoints/
-notebooks/.ipynb_checkpoints/
+
 
 # Editor
 .vscode/
