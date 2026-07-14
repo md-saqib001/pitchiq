@@ -1,36 +1,44 @@
-// backend/index.js
+// backend/index.js — Create performance indexes for PitchIQ
 const Database = require('better-sqlite3');
-const db = new Database('pitchiq.db');
+const path = require('path');
 
-console.log("Applying structural indexing optimization...");
+const DB_PATH = path.join(__dirname, 'pitchiq.db');
+const db = new Database(DB_PATH);
 
-console.time("Indexing Execution Time");
+console.log('\n════════════════════════════════════════');
+console.log('  PitchIQ Index Builder');
+console.log('════════════════════════════════════════\n');
 
-// 1. Create a composite index on the core delivery filter targets
-db.exec(`
-  CREATE INDEX IF NOT EXISTS idx_deliveries_lookup 
-  ON deliveries (batter, over_id);
-`);
+console.time('Indexing Time');
 
-// 2. Create index on foreign key relationships to prevent slow JOIN lookups
-db.exec(`
-  CREATE INDEX IF NOT EXISTS idx_overs_lookup 
-  ON overs (over_id, over_number, inning_id);
-`);
+// Core delivery lookup indexes
+db.exec(`CREATE INDEX IF NOT EXISTS idx_del_batter ON deliveries(batter);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_del_batter_phase ON deliveries(batter, match_phase);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_del_batter_match ON deliveries(batter, match_id);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_del_bowler ON deliveries(bowler, match_phase);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_del_match ON deliveries(match_id, over_number);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_del_innings ON deliveries(innings_id);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_del_over ON deliveries(over_id);`);
 
-db.exec(`
-  CREATE INDEX IF NOT EXISTS idx_innings_lookup 
-  ON innings (inning_id, inning_number);
-`);
+// Match lookup indexes
+db.exec(`CREATE INDEX IF NOT EXISTS idx_match_venue ON matches(venue);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_match_season ON matches(season);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_match_date ON matches(date);`);
 
-console.timeEnd("Indexing Execution Time");
-console.log("Indexes successfully built. Analyzing table data...");
+// Innings lookup indexes
+db.exec(`CREATE INDEX IF NOT EXISTS idx_innings_chase ON innings(is_chase, target);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_innings_match ON innings(match_id, innings_number);`);
 
-db.exec(`
-  CREATE INDEX IF NOT EXISTS idx_deliveries_bowler_lookup 
-  ON deliveries (bowler, over_id);
-`);
+// Over lookup indexes
+db.exec(`CREATE INDEX IF NOT EXISTS idx_overs_innings ON overs(innings_id);`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_overs_match ON overs(match_id);`);
 
-// Run ANALYZE so the query planner optimizes paths based on the new indexes
+console.timeEnd('Indexing Time');
+
+// Run ANALYZE so query planner optimizes based on indexes
 db.exec(`ANALYZE;`);
-console.log("Database optimized.");
+
+console.log('All indexes created and ANALYZE complete.');
+console.log('════════════════════════════════════════\n');
+
+db.close();

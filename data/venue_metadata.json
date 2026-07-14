@@ -1,0 +1,182 @@
+{
+  "Arun Jaitley Stadium, Delhi": {
+    "city": "Delhi",
+    "country": "India",
+    "capacity": 35200
+  },
+  "Barabati Stadium, Cuttack": {
+    "city": "Cuttack",
+    "country": "India",
+    "capacity": 45000
+  },
+  "Barsapara Cricket Stadium, Guwahati": {
+    "city": "Guwahati",
+    "country": "India",
+    "capacity": 39500
+  },
+  "Ekana Cricket Stadium, Lucknow": {
+    "city": "Lucknow",
+    "country": "India",
+    "capacity": 50000
+  },
+  "Brabourne Stadium, Mumbai": {
+    "city": "Mumbai",
+    "country": "India",
+    "capacity": 20000
+  },
+  "Dr DY Patil Sports Academy, Mumbai": {
+    "city": "Mumbai",
+    "country": "India",
+    "capacity": 37900
+  },
+  "Wankhede Stadium, Mumbai": {
+    "city": "Mumbai",
+    "country": "India",
+    "capacity": 33108
+  },
+  "Buffalo Park, East London": {
+    "city": "East London",
+    "country": "South Africa",
+    "capacity": 15000
+  },
+  "De Beers Diamond Oval, Kimberley": {
+    "city": "Kimberley",
+    "country": "South Africa",
+    "capacity": 11000
+  },
+  "Kingsmead, Durban": {
+    "city": "Durban",
+    "country": "South Africa",
+    "capacity": 25000
+  },
+  "Wanderers Stadium, Johannesburg": {
+    "city": "Johannesburg",
+    "country": "South Africa",
+    "capacity": 34000
+  },
+  "Newlands, Cape Town": {
+    "city": "Cape Town",
+    "country": "South Africa",
+    "capacity": 25000
+  },
+  "OUTsurance Oval, Bloemfontein": {
+    "city": "Bloemfontein",
+    "country": "South Africa",
+    "capacity": 20000
+  },
+  "St George's Park, Port Elizabeth": {
+    "city": "Port Elizabeth",
+    "country": "South Africa",
+    "capacity": 19000
+  },
+  "SuperSport Park, Centurion": {
+    "city": "Centurion",
+    "country": "South Africa",
+    "capacity": 22000
+  },
+  "ACA-VDCA Cricket Stadium, Visakhapatnam": {
+    "city": "Visakhapatnam",
+    "country": "India",
+    "capacity": 27500
+  },
+  "Dubai International Cricket Stadium": {
+    "city": "Dubai",
+    "country": "UAE",
+    "capacity": 25000
+  },
+  "Sharjah Cricket Stadium": {
+    "city": "Sharjah",
+    "country": "UAE",
+    "capacity": 16000
+  },
+  "Zayed Cricket Stadium, Abu Dhabi": {
+    "city": "Abu Dhabi",
+    "country": "UAE",
+    "capacity": 20000
+  },
+  "Eden Gardens, Kolkata": {
+    "city": "Kolkata",
+    "country": "India",
+    "capacity": 68000
+  },
+  "Green Park, Kanpur": {
+    "city": "Kanpur",
+    "country": "India",
+    "capacity": 32000
+  },
+  "Himachal Pradesh Cricket Association Stadium, Dharamsala": {
+    "city": "Dharamsala",
+    "country": "India",
+    "capacity": 23000
+  },
+  "Holkar Cricket Stadium, Indore": {
+    "city": "Indore",
+    "country": "India",
+    "capacity": 30000
+  },
+  "JSCA International Stadium Complex, Ranchi": {
+    "city": "Ranchi",
+    "country": "India",
+    "capacity": 39000
+  },
+  "M Chinnaswamy Stadium, Bengaluru": {
+    "city": "Bengaluru",
+    "country": "India",
+    "capacity": 33800
+  },
+  "MA Chidambaram Stadium, Chennai": {
+    "city": "Chennai",
+    "country": "India",
+    "capacity": 38200
+  },
+  "Mullanpur Stadium, Chandigarh": {
+    "city": "Chandigarh",
+    "country": "India",
+    "capacity": 38200
+  },
+  "Maharashtra Cricket Association Stadium, Pune": {
+    "city": "Pune",
+    "country": "India",
+    "capacity": 37406
+  },
+  "Narendra Modi Stadium, Ahmedabad": {
+    "city": "Ahmedabad",
+    "country": "India",
+    "capacity": 132000
+  },
+  "Nehru Stadium, Kochi": {
+    "city": "Kochi",
+    "country": "India",
+    "capacity": 60000
+  },
+  "Punjab Cricket Association Stadium, Mohali": {
+    "city": "Chandigarh",
+    "country": "India",
+    "capacity": 27000
+  },
+  "Rajiv Gandhi International Stadium, Hyderabad": {
+    "city": "Hyderabad",
+    "country": "India",
+    "capacity": 39200
+  },
+  "Saurashtra Cricket Association Stadium, Rajkot": {
+    "city": "Rajkot",
+    "country": "India",
+    "capacity": 28000
+  },
+  "Sawai Mansingh Stadium, Jaipur": {
+    "city": "Jaipur",
+    "country": "India",
+    "capacity": 30000
+  },
+  "Shaheed Veer Narayan Singh International Stadium, Raipur": {
+    "city": "Raipur",
+    "country": "India",
+    "capacity": 65000
+  },
+  "Vidarbha Cricket Association Stadium, Nagpur": {
+    "city": "Nagpur",
+    "country": "India",
+    "capacity": 45000
+  }
+}

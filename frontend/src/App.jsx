@@ -19,6 +19,7 @@ import PhaseBreakdown from './components/PhaseBreakdown';
 import VenueIntelligence from './components/VenueIntelligence';
 import MatchTimeline from './components/MatchTimeline';
 import PlayerCompare from './components/PlayerCompare';
+import HeadToHead from './components/HeadToHead';
 import TopPerformers from './components/TopPerformers';
 import { DashboardSkeleton } from './components/LoadingSkeleton';
 import EmptyState from './components/EmptyState';
@@ -161,7 +162,7 @@ const App = () => {
         if (playerName) {
             handleAnalyze();
         }
-    }, [playerName]);
+    }, [playerName, filters]);
 
     const handlePhaseClick = (phase) => {
         setFilters(prev => ({ ...prev, phase }));
@@ -204,6 +205,12 @@ const App = () => {
                                     className={`px-5 py-2.5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${activeTab === 'compare' ? 'bg-neutral-800 text-purple-400 shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
                                 >
                                     Compare
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('h2h')}
+                                    className={`px-5 py-2.5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${activeTab === 'h2h' ? 'bg-neutral-800 text-cyan-400 shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
+                                >
+                                    Head-to-head
                                 </button>
                             </nav>
                         </div>
@@ -266,7 +273,8 @@ const App = () => {
                                                     <>
                                                         <StatCard
                                                             label="Batting Average"
-                                                            value={playerStats.avg ? parseFloat(playerStats.avg).toFixed(1) : '-'}
+                                                            value={playerStats.avg ? parseFloat(playerStats.avg) : null}
+                                                            decimals={1}
                                                             sparkData={getSparkData('avg')}
                                                             benchmark={iplAverages?.avg}
                                                             color="emerald"
@@ -274,7 +282,8 @@ const App = () => {
                                                         />
                                                         <StatCard
                                                             label="Strike Rate"
-                                                            value={playerStats.strike_rate ? parseFloat(playerStats.strike_rate).toFixed(1) : '-'}
+                                                            value={playerStats.strike_rate ? parseFloat(playerStats.strike_rate) : null}
+                                                            decimals={1}
                                                             sparkData={getSparkData('sr')}
                                                             benchmark={iplAverages?.strike_rate}
                                                             color="amber"
@@ -282,7 +291,9 @@ const App = () => {
                                                         />
                                                         <StatCard
                                                             label="Boundary %"
-                                                            value={playerStats.boundary_rate ? `${parseFloat(playerStats.boundary_rate).toFixed(1)}%` : '-'}
+                                                            value={playerStats.boundary_rate ? parseFloat(playerStats.boundary_rate) : null}
+                                                            decimals={1}
+                                                            suffix="%"
                                                             sparkData={getSparkData('boundary_rate')}
                                                             benchmark={iplAverages?.boundary_rate}
                                                             color="blue"
@@ -290,7 +301,7 @@ const App = () => {
                                                         />
                                                         <StatCard
                                                             label="Runs / Matches"
-                                                            value={playerStats.total_runs ? playerStats.total_runs.toLocaleString() : '0'}
+                                                            value={playerStats.total_runs || 0}
                                                             subValue={`${playerStats.matches || 0} Matches (${playerStats.dismissals || 0} Outs)`}
                                                             sparkData={getSparkData('runs')}
                                                             color="fuchsia"
@@ -432,6 +443,12 @@ const App = () => {
                         {activeTab === 'compare' && (
                             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                                 <PlayerCompare />
+                            </div>
+                        )}
+
+                        {activeTab === 'h2h' && (
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                <HeadToHead />
                             </div>
                         )}
                     </main>

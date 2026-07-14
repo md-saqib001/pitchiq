@@ -79,51 +79,67 @@ const FilterBar = ({
             {/* Top decorative glow */}
             <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
 
-            <div className="flex flex-col lg:flex-row gap-4 items-stretch">
-                {/* Search Input with Suggestions */}
-                <div className="relative flex-1 lg:max-w-xs">
-                    <Search className="absolute left-4 top-3.5 w-5 h-5 text-neutral-500" />
-                    <input 
-                        type="text" 
-                        value={playerName}
-                        onChange={(e) => {
-                            setPlayerName(e.target.value);
-                            setShowSuggestions(true);
-                        }}
-                        onFocus={() => setShowSuggestions(true)}
-                        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                setShowSuggestions(false);
-                                onAnalyze();
-                            }
-                        }}
-                        className="w-full h-12 bg-neutral-900 border border-neutral-800 text-white rounded-2xl pl-12 pr-4 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-neutral-900 transition-all font-medium placeholder:text-neutral-600 text-sm"
-                        placeholder="Search player (e.g. V Kohli)"
-                    />
-                    
-                    {/* Auto-suggestions Dropdown */}
-                    {showSuggestions && suggestions.length > 0 && (
-                        <div className="absolute top-14 left-0 right-0 bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                            {suggestions.map((name, index) => (
-                                <button
-                                    key={index}
-                                    onMouseDown={() => {
-                                        setPlayerName(name);
-                                        setShowSuggestions(false);
-                                    }}
-                                    className="w-full text-left px-4 py-3 text-sm text-neutral-300 hover:bg-neutral-800 hover:text-white transition-colors flex items-center gap-2 border-b border-neutral-800/30 last:border-0 font-medium"
-                                >
-                                    <Sparkles className="w-3.5 h-3.5 text-purple-500" />
-                                    {name}
-                                </button>
-                            ))}
-                        </div>
-                    )}
+            <div className="flex flex-col gap-5">
+                {/* Row 1: Search Bar & Analyze Button */}
+                <div className="flex flex-col sm:flex-row gap-4 items-stretch">
+                    {/* Search Input with Suggestions */}
+                    <div className="relative flex-1">
+                        <Search className="absolute left-4 top-3.5 w-5 h-5 text-neutral-500" />
+                        <input 
+                            type="text" 
+                            value={playerName}
+                            onChange={(e) => {
+                                setPlayerName(e.target.value);
+                                setShowSuggestions(true);
+                            }}
+                            onFocus={() => setShowSuggestions(true)}
+                            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    setShowSuggestions(false);
+                                    onAnalyze();
+                                }
+                            }}
+                            className="w-full h-12 bg-neutral-900 border border-neutral-800 text-white rounded-2xl pl-12 pr-4 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-neutral-900 transition-all font-medium placeholder:text-neutral-600 text-sm"
+                            placeholder="Search player (e.g. V Kohli)"
+                        />
+                        
+                        {/* Auto-suggestions Dropdown */}
+                        {showSuggestions && suggestions.length > 0 && (
+                            <div className="absolute top-14 left-0 right-0 bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                                {suggestions.map((name, index) => (
+                                    <button
+                                        key={index}
+                                        onMouseDown={() => {
+                                            setPlayerName(name);
+                                            setShowSuggestions(false);
+                                        }}
+                                        className="w-full text-left px-4 py-3 text-sm text-neutral-300 hover:bg-neutral-800 hover:text-white transition-colors flex items-center gap-2 border-b border-neutral-800/30 last:border-0 font-medium"
+                                    >
+                                        <Sparkles className="w-3.5 h-3.5 text-purple-500" />
+                                        {name}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Analyze Button */}
+                    <button 
+                        onClick={onAnalyze}
+                        disabled={loading || !playerName.trim()}
+                        className="h-12 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white px-8 rounded-2xl font-bold transition-all shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 whitespace-nowrap text-sm cursor-pointer sm:w-auto w-full"
+                    >
+                        {loading ? (
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        ) : (
+                            <span>Analyze</span>
+                        )}
+                    </button>
                 </div>
 
-                {/* Filters Grid */}
-                <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
+                {/* Row 2: Filters Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                     {/* Phase Selector */}
                     <div className="relative group">
                         <select 
@@ -232,19 +248,6 @@ const FilterBar = ({
                         <ChevronDown className="absolute right-3.5 top-4 w-4 h-4 text-neutral-500 pointer-events-none group-hover:text-neutral-400 transition-colors" />
                     </div>
                 </div>
-
-                {/* Analyze Button */}
-                <button 
-                    onClick={onAnalyze}
-                    disabled={loading || !playerName.trim()}
-                    className="h-12 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white px-8 rounded-2xl font-bold transition-all shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 whitespace-nowrap text-sm cursor-pointer"
-                >
-                    {loading ? (
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    ) : (
-                        <span>Analyze</span>
-                    )}
-                </button>
             </div>
 
             {/* Filter Badges and Reset Button */}

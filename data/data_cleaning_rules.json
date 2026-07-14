@@ -1,0 +1,22 @@
+{
+  "missing_data_rules": {
+    "missing_fielder_on_catch": {
+      "strategy": "No action needed (Store NULL if it ever happens).",
+      "reasoning": "Across all 19 seasons, 0.0% of caught dismissals are missing fielder data. Cricsheet has retroactively populated this perfectly. If future data lacks a fielder, DB will store NULL and UI will show 'Unknown'."
+    },
+    "matches_missing_innings_2": {
+      "strategy": "Flag as abandoned/no_result, but KEEP Innings 1.",
+      "reasoning": "These are real matches (e.g., rain abandoned after Innings 1). Deliveries in Innings 1 are still valid statistical events. They will be excluded from result-based aggregations (e.g., average when chasing), but kept in the main deliveries table."
+    },
+    "over_count_mismatches_less_than_6_balls": {
+      "strategy": "No action needed (Valid Data).",
+      "reasoning": "Manual inspection of match 829757 confirms these are NOT bugs. Overs naturally truncate when a team is bowled out (10th wicket) or when a team hits the winning runs mid-over."
+    }
+  },
+  "derived_fields": {
+    "is_legal_delivery": {
+      "definition": "A delivery is legal if the 'extras' object does NOT contain 'wides' or 'noballs'.",
+      "purpose": "Used to calculate balls faced for strike rate, economy rate, and over completion metrics."
+    }
+  }
+}

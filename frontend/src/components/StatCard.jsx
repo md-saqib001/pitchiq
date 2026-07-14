@@ -3,9 +3,9 @@ import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import useCountUp from '../hooks/useCountUp';
 
-// Gradient configs per metric type
+// Gradient configs per metric type/color
 const gradientMap = {
-    avg: {
+    emerald: {
         gradient: 'from-emerald-500/15 to-emerald-500/0',
         glow: 'bg-emerald-500/10',
         accent: 'text-emerald-400',
@@ -13,7 +13,7 @@ const gradientMap = {
         sparkColor: '#34d399',
         sparkGradient: ['#34d399', 'rgba(52, 211, 153, 0.05)'],
     },
-    sr: {
+    amber: {
         gradient: 'from-amber-500/15 to-amber-500/0',
         glow: 'bg-amber-500/10',
         accent: 'text-amber-400',
@@ -21,7 +21,7 @@ const gradientMap = {
         sparkColor: '#fbbf24',
         sparkGradient: ['#fbbf24', 'rgba(251, 191, 36, 0.05)'],
     },
-    runs: {
+    fuchsia: {
         gradient: 'from-fuchsia-500/15 to-fuchsia-500/0',
         glow: 'bg-fuchsia-500/10',
         accent: 'text-fuchsia-400',
@@ -29,7 +29,7 @@ const gradientMap = {
         sparkColor: '#c084fc',
         sparkGradient: ['#c084fc', 'rgba(192, 132, 252, 0.05)'],
     },
-    boundary: {
+    blue: {
         gradient: 'from-blue-500/15 to-blue-500/0',
         glow: 'bg-blue-500/10',
         accent: 'text-blue-400',
@@ -37,43 +37,80 @@ const gradientMap = {
         sparkColor: '#60a5fa',
         sparkGradient: ['#60a5fa', 'rgba(96, 165, 250, 0.05)'],
     },
+    red: {
+        gradient: 'from-red-500/15 to-red-500/0',
+        glow: 'bg-red-500/10',
+        accent: 'text-red-400',
+        accentBg: 'bg-red-400/10',
+        sparkColor: '#f87171',
+        sparkGradient: ['#f87171', 'rgba(248, 113, 113, 0.05)'],
+    },
+    cyan: {
+        gradient: 'from-cyan-500/15 to-cyan-500/0',
+        glow: 'bg-cyan-500/10',
+        accent: 'text-cyan-400',
+        accentBg: 'bg-cyan-400/10',
+        sparkColor: '#22d3ee',
+        sparkGradient: ['#22d3ee', 'rgba(34, 211, 238, 0.05)'],
+    }
 };
+
+// Aliases for compatibility
+gradientMap.avg = gradientMap.emerald;
+gradientMap.sr = gradientMap.amber;
+gradientMap.runs = gradientMap.fuchsia;
+gradientMap.boundary = gradientMap.blue;
+gradientMap.green = gradientMap.emerald;
+gradientMap.yellow = gradientMap.amber;
+gradientMap.purple = gradientMap.fuchsia;
 
 const StatCard = ({
     title,
+    label,            // alias for title
     value,
     icon,
-    type = 'avg', // 'avg' | 'sr' | 'runs' | 'boundary'
+    type,
+    color,            // alias for type
     suffix = '',
     decimals = 0,
-    seasonData = [],  // Array of { season, value } for sparkline
-    iplAvg = null,    // IPL average for comparison
+    seasonData,       // Array of { season, value } for sparkline
+    sparkData,        // alias for seasonData
+    iplAvg,           // IPL average for comparison
+    benchmark,        // alias for iplAvg
     matches = null,
     innings = null,
+    subValue = null,  // text to display below
     lowerIsBetter = false,
 }) => {
-    const theme = gradientMap[type] || gradientMap.avg;
+    // Map aliases
+    const cardTitle = title || label || '';
+    const cardColor = color || type || 'avg';
+    const cardSparkData = seasonData || sparkData || [];
+    const cardIplAvg = iplAvg !== undefined ? iplAvg : (benchmark !== undefined ? benchmark : null);
+
+    const theme = gradientMap[cardColor] || gradientMap[cardColor] || gradientMap.avg;
     const animatedValue = useCountUp(value, 800, decimals);
 
     // Compute IPL comparison
     const comparison = useMemo(() => {
-        if (iplAvg === null || iplAvg === 0 || value === null || isNaN(value)) return null;
-        const diff = ((value - iplAvg) / iplAvg) * 100;
+        if (cardIplAvg === null || cardIplAvg === 0 || value === null || isNaN(parseFloat(value))) return null;
+        const numValue = parseFloat(value);
+        const diff = ((numValue - cardIplAvg) / cardIplAvg) * 100;
         return {
             diff: Math.abs(diff).toFixed(0),
             isAbove: diff > 0,
             isEqual: Math.abs(diff) < 2,
         };
-    }, [value, iplAvg]);
+    }, [value, cardIplAvg]);
 
     // Prepare sparkline data
-    const sparkData = useMemo(() => {
-        if (!seasonData || seasonData.length === 0) return null;
-        return seasonData.slice(-5).map(s => ({
+    const normalizedSparkData = useMemo(() => {
+        if (!cardSparkData || cardSparkData.length === 0) return null;
+        return cardSparkData.slice(-5).map(s => ({
             season: s.season,
             value: parseFloat(s.value) || 0,
         }));
-    }, [seasonData]);
+    }, [cardSparkData]);
 
     const isPositiveComparison = comparison ? (lowerIsBetter ? !comparison.isAbove : comparison.isAbove) : false;
 
@@ -86,10 +123,12 @@ const StatCard = ({
 
             {/* Header */}
             <div className="flex justify-between items-start mb-3 relative z-10">
-                <h3 className="text-neutral-500 font-bold text-[11px] uppercase tracking-widest">{title}</h3>
-                <span className={`${theme.accent} p-2 ${theme.accentBg} rounded-xl transition-transform group-hover:scale-110 duration-300`}>
-                    {icon}
-                </span>
+                <h3 className="text-neutral-500 font-bold text-[11px] uppercase tracking-widest">{cardTitle}</h3>
+                {icon && (
+                    <span className={`${theme.accent} p-2 ${theme.accentBg} rounded-xl transition-transform group-hover:scale-110 duration-300`}>
+                        {icon}
+                    </span>
+                )}
             </div>
 
             {/* Main Value */}
@@ -118,20 +157,26 @@ const StatCard = ({
             </div>
 
             {/* Secondary stats */}
-            {(matches !== null || innings !== null) && (
+            {(matches !== null || innings !== null || subValue !== null) && (
                 <div className="flex gap-4 text-[11px] text-neutral-500 font-medium mb-2 relative z-10">
-                    {matches !== null && <span>{matches} matches</span>}
-                    {innings !== null && <span>{innings} innings</span>}
+                    {subValue !== null ? (
+                        <span>{subValue}</span>
+                    ) : (
+                        <>
+                            {matches !== null && <span>{matches} matches</span>}
+                            {innings !== null && <span>{innings} innings</span>}
+                        </>
+                    )}
                 </div>
             )}
 
             {/* Sparkline */}
-            {sparkData && sparkData.length > 1 && (
+            {normalizedSparkData && normalizedSparkData.length > 1 && (
                 <div className="h-10 w-full relative z-10 mt-auto -mb-1 -mx-1">
                     <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={sparkData} margin={{ top: 2, right: 2, left: 2, bottom: 0 }}>
+                        <AreaChart data={normalizedSparkData} margin={{ top: 2, right: 2, left: 2, bottom: 0 }}>
                             <defs>
-                                <linearGradient id={`spark-${type}`} x1="0" y1="0" x2="0" y2="1">
+                                <linearGradient id={`spark-${cardColor}`} x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="0%" stopColor={theme.sparkGradient[0]} stopOpacity={0.4} />
                                     <stop offset="100%" stopColor={theme.sparkGradient[1]} stopOpacity={0} />
                                 </linearGradient>
@@ -141,7 +186,7 @@ const StatCard = ({
                                 dataKey="value"
                                 stroke={theme.sparkColor}
                                 strokeWidth={1.5}
-                                fill={`url(#spark-${type})`}
+                                fill={`url(#spark-${cardColor})`}
                                 dot={false}
                                 activeDot={false}
                             />
