@@ -180,7 +180,7 @@ const HeadToHead = () => {
                         {stats.balls_faced === 0 ? (
                             <p className="text-neutral-400 mt-4 text-sm flex items-center gap-2">
                                 <AlertCircle className="w-4 h-4" />
-                                No matchup data found for these players.
+                                {searchedBatter} and {searchedBowler} have never played against each other.
                             </p>
                         ) : (
                             <p className="text-neutral-400 mt-2 text-sm font-medium">
